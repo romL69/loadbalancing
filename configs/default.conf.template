@@ -1,0 +1,22 @@
+upstream public {
+    ${PUBLIC_BACKEND}
+}
+
+server {
+    listen 80 default_server;
+    server_name ${NGINX_HOST};
+
+    error_page   400 402 403 404  /400.html;
+    location = /40x.html {
+        root   /etc/nginx/html;
+    }
+
+    error_page   500 502 503 504  /500.html;
+    location = /50x.html {
+        root   /etc/nginx/html;
+    }
+
+    location / {
+        proxy_pass http://public;
+    }
+}
